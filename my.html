@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>האתר שלי</title>
+    <link rel="stylesheet" href="/dist/my.css">
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: #ffe6f9;
+        color: #333;
+        padding: 20px;
+        background: url(ing/background.jpg)no-repeat top center/ cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+
+    }
+
+    .container {
+        width: 450px;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgb(255, 204, 230);
+    }
+
+    #display {
+        color: #ff99bb;
+    }
+
+
+    .lass {
+        margin-right: 27%;
+        width: 200px;
+
+    }
+
+    button {
+        border-radius: 10px;
+        background-color: #ff99bb;
+        padding: 5px;
+        border: #ff99bb solid 2px;
+        color: white;
+        margin-top: 5px;
+    }
+</style>
+
+<body>
+    <div class="container">
+
+        <div id="display"></div>
+        <button id="nextBtn">next</button>
+    </div>
+    <!-- <audio controls>
+        <source src="ing/rav.mp4" type="video/mp4">
+        הדפדפן שלך לא תומך בווידאו.
+    </audio> -->
+    <!-- <img src="ing/thanks.jpg" width="400px"> -->
+</body>
+<script>
+    const items = ['<p>&#9829 היום הולך להיות יום נדיר </p><p>&#9829 משהו מגניב יקרה לי היום </p><p class="lass">&#9829 אני מתרגשת שפרק חדש מתחיל היום בחיים שלי</p>', '<input type="text" placeholder="כתוב כאן משהו..." id="myInput">', '<audio controls><source src="img/rav.mp4" type="audio/mp4">הדפדפן שלך לא תומך באודיו.</audio>', '<img src="ing/k.jpg" width="400px" >', '<audio controls><source src="img/rav2.mp4" type="audio/mp4">הדפדפן שלך לא תומך באודיו.</audio>', '<img src="ing/kn.jpg" width="400px" >', '<img src="ing/thanks.jpg" width="450px">']
+
+
+
+    const display = document.getElementById("display");
+    const button = document.getElementById("nextBtn");
+    const input = document.querySelector("#myInput");
+    let index = 0;
+    display.innerHTML = items[index];
+
+    button.addEventListener("click", () => {
+        index++;
+        if (index >= items.length) {
+            index = 0; // חוזר להתחלה אם הגענו לסוף
+        }
+        display.innerHTML = items[index];
+        const input = document.querySelector("#myInput");
+        if (input) {
+            input.focus();
+        }
+    });
+</script>
+
+</html>
