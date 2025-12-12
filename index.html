@@ -61,12 +61,13 @@
     </div>
     <!-- <audio controls>
         <source src="ing/rav.mp4" type="video/mp4">
-        הדפדפן שלך לא תומך בווידאו.
     </audio> -->
     <!-- <img src="ing/thanks.jpg" width="400px"> -->
 </body>
 <script>
-     const items = ['<p>&#9829 היום הולך להיות יום נדיר </p><p>&#9829 משהו מגניב יקרה לי היום </p><p class="lass">&#9829 אני מתרגשת שפרק חדש מתחיל היום בחיים שלי</p>', '<input type="text" placeholder="כתוב כאן משהו..." id="myInput">', ' <audio controls><source src="ing/rav.mp4" type="video/mp4"></audio>', '<img src="ing/k.jpg" width="400px" >', ' <audio controls><source src="ing/rav2.mp4" type="video/mp4"></audio>', '<img src="ing/kn.jpg" width="400px" >', '<img src="ing/thanks.jpg" width="400px">']
+    const items = ['<p>&#9829 היום הולך להיות יום נדיר </p><p>&#9829 משהו מגניב יקרה לי היום </p><p class="lass">&#9829 אני מתרגשת שפרק חדש מתחיל היום בחיים שלי</p>', ' <audio controls><source src="ing/rav.mp4" type="video/mp4"></audio>', '<img src="ing/k.jpg" width="400px" >', ' <audio controls><source src="ing/rav2.mp4" type="video/mp4"></audio>', '<img src="ing/kn.jpg" width="400px" >', ' <audio controls><source src="ing/fear.mp4" type="video/mp4"></audio>', '<div><span id="timer">60</span> שניות <button id="startTimer">התחילי</button></div>'
+        , '<img src="ing/thanks.jpg" width="450px">']
+
 
 
     const display = document.getElementById("display");
@@ -75,19 +76,72 @@
     let index = 0;
     display.innerHTML = items[index];
 
+
+    let activeTimerInterval = null;
+
+    // פונקציה שמציגה פריט ומחברת מאזינים רלוונטיים
+    function showItem(i) {
+        // הצג את ה-HTML
+        display.innerHTML = items[i];
+
+        // אחרי שה־innerHTML הוצב — נצמיד מאזינים לאלמנטים הפנימיים (אם יש)
+        attachInnerListeners();
+    }
+
+    // מחבר את הכפתור של הסטופר (אם קיים)
+    function attachInnerListeners() {
+        // נבטל אינטרוול קודם אם קיים (רק למקרה)
+        // (אופציונלי: אפשר להשאיר אותו רץ גם כשמשתנים פריטים, לפי רצונך)
+        if (activeTimerInterval) {
+            clearInterval(activeTimerInterval);
+            activeTimerInterval = null;
+        }
+
+        const startBtn = document.getElementById("startTimer");
+        const timerSpan = document.getElementById("timer");
+
+        if (startBtn && timerSpan) {
+            // ודאי שהכפתור לא יריץ אינטרוול כפול
+            startBtn.addEventListener("click", function startHandler() {
+                // אם כבר רץ אינטרוול — אל תתחיל שוב
+                if (activeTimerInterval) return;
+
+                let timeLeft = 60; // שניות
+                timerSpan.textContent = timeLeft;
+
+                // נבטל את הכפתור בזמן הריצה כדי למנוע לחיצות נוספות
+                startBtn.disabled = true;
+                startBtn.textContent = "רץ...";
+
+                activeTimerInterval = setInterval(() => {
+                    timeLeft--;
+                    timerSpan.textContent = timeLeft;
+
+                    if (timeLeft <= 0) {
+                        clearInterval(activeTimerInterval);
+                        activeTimerInterval = null;
+                        timerSpan.textContent = "הזמן נגמר!";
+                        startBtn.disabled = false;
+                        startBtn.textContent = "התחילי";
+                        // נוכל גם להפעיל פעולה נוספת כאן אם רוצים
+                    }
+                }, 1000);
+
+                // אם את רוצה לאפשר עצירה מוקדמת אפשר להוסיף כפתור Stop וכו'
+            }, { once: true }); // once:true ימנע רישום מאזין כפול אם הפונקציה תקרא שוב
+        }
+    }
+    showItem(index);
+
+    // לחצן next
     button.addEventListener("click", () => {
         index++;
         if (index >= items.length) {
             index = 0; // חוזר להתחלה אם הגענו לסוף
         }
-        display.innerHTML = items[index];
-        const input = document.querySelector("#myInput");
-        if (input) {
-            input.focus();
-        }
+        showItem(index);
     });
+
 </script>
 
 </html>
-
-
